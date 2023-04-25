@@ -11,7 +11,7 @@ public class Ground
     {
         rect1.height = BuildingHeight;
 
-        
+
     }
 
 
@@ -37,4 +37,3 @@ public class Ground
     }
 
 }
-

@@ -3,11 +3,6 @@ using System.Numerics;
 using Raylib_cs;
 
 
-
-
-
-
-
 public class Missile
 {
     public Vector2 position = new Vector2(200, 200);
@@ -16,7 +11,7 @@ public class Missile
     public void Update()
     {
 
-        Vector2 mousePos = Raylib.GetMousePosition();       
+        Vector2 mousePos = Raylib.GetMousePosition();
 
         Vector2 diff = mousePos - position;
 
@@ -31,6 +26,4 @@ public class Missile
         Raylib.DrawCircleV(position, 10, Color.RED);
     }
 
-
-   
 }

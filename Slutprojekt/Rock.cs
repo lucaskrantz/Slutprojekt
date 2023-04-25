@@ -2,62 +2,39 @@ using System;
 using System.Numerics;
 using Raylib_cs;
 
-
-
 public class Rock
 {
-
     public Rectangle rect = new Rectangle(0, 0, 50, 50);
-    public int speed = 3;
-    public List<Rock> rocks = new List<Rock>();
-    public Random generator = new Random();
 
-    float rockTimer = 3f; // timer in seconds
-    float rockTimerMax = 3f; // time interval between rocks
-    int count = 0;
+    public Random generator = new Random();
 
     public Rock()
     {
         rect.x = generator.Next(50, 1150);
-
     }
 
 
-
-    public void CheckTimer()
+    // Uppdatera positionen för stenen
+    public void Update(Game.Difficulty difficulty)
     {
-        rockTimer -= Raylib.GetFrameTime();
-        if (rockTimer <= 0)
+        if (difficulty == Game.Difficulty.Medium)
         {
-            rocks.Add(new Rock());
-            rockTimer = rockTimerMax;
-            count++;
+            rect.y += 6;
         }
-
-
-
-    }
-
-    public void CheckCount()
-    {
-        if (count % 10 == 1)
+        else if (difficulty == Game.Difficulty.Hard)
         {
-            rockTimerMax = 2f;
-            count = 0;
+            rect.y += 20;
         }
-
+        else
+        {
+            rect.y += 3;
+        }
     }
-    public void Update()
-    {
-        rect.y += speed;
-    }
-
 
 
     public void Draw()
     {
         Raylib.DrawRectangleRec(rect, Color.BLUE);
-
     }
 
 }

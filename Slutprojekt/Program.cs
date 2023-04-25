@@ -1,7 +1,4 @@
 ﻿using Raylib_cs;
-using System.Numerics;
-
-
 
 //SKAPA KANONERNA
 //SKAPA MISSILER 
@@ -19,127 +16,108 @@ using System.Numerics;
 //METOD FÖR ATT SE IFALL MISSIL KOMMER I KONTAKT MED BOMB
 //METOD FÖR ATT SE IFALL BOMB KOMMER I KONTAKT MED HUS
 
-
-
 Raylib.InitWindow(1200, 800, "Missile Command");
-
 Raylib.SetTargetFPS(60);
 
+// Håll koll på stenarna
+List<Rock> rocks = new List<Rock>();
+int rockCount = 0;
 
+Game game = new Game();
 
-int cannonWidth = 50;
-int cannonHeight = 50;
-
-int Score = 0;
-
-int Life = 3;
-
-// List<Rock> rocks = new List<Rock>();
-
-List<Ground> buildings = new List<Ground>();
-
-
-
-
-
+// Missilen som användaren kontrollerar
 Missile m1 = new Missile();
 
-Rock r1 = new Rock();
+float rockTimer = 3f;
+float rockTimerMax = 3f;
 
-
-// Rectangle cannon = new Rectangle(10, 700, cannonWidth, cannonHeight);
-// Rectangle missile = new Rectangle(10, 300, 15, 15);
-
-
+bool showStartScreen = true;
+bool showGameoverScreen = false;
 
 while (Raylib.WindowShouldClose() == false)
 {
-
-
-    // LOGIK
-    // Rectangle rock = new Rectangle(r1.x, r1.y, 50, 50);
-
-
-
-
-    for (var i = 0; i < r1.rocks.Count; i++)
+    if (showStartScreen)
     {
-        Rock rock = r1.rocks[i];
-
-        if (Raylib.CheckCollisionCircleRec(m1.position, 10, rock.rect))
+        // visa startinstruktioner
+        Raylib.DrawText("Press LMB to start", 600, 400, 50, Color.GREEN);
+        if (Raylib.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT))
         {
-            Score++;
-            r1.rocks.RemoveAt(i);
+            showStartScreen = false;
         }
 
-
-        // if (Raylib.CheckCollisionRecs(g1.rect1, rock.rect))
-        // {
-        //     Life--;
-        //     rocks.RemoveAt(i);
-        // }
-        // if (Raylib.CheckCollisionRecs(g1.rect2, rock.rect))
-        // {
-        //     Life--;
-        //     rocks.RemoveAt(i);
-        // }
-
-        // if (Raylib.CheckCollisionRecs(g1.rect3, rock.rect))
-        // {
-        //     Life--;
-        //     rocks.RemoveAt(i);
-        // }
-
-
-
-
     }
-
-
-
-    // rocks.Add(new Rock());
-
-
-
-
-
-
-
-
-
-    foreach (Rock r in r1.rocks)
+    else if (showGameoverScreen)
     {
-        r.Draw();
-        r.Update();
+        Raylib.ClearBackground(Color.RED);
+        Raylib.DrawText("GAME OVER", 600, 400, 50, Color.GREEN);
+
     }
-    foreach (Ground b in buildings)
+    else
     {
-        b.Draw();
+        // kör spelet
+
+        // uppdatera svårighetsgrad efter ett antal stenar
+        if (rockCount >= 10 && rockCount < 20)
+        {
+            game.currentDifficulty = Game.Difficulty.Medium;
+        }
+        else if (rockCount >= 20)
+        {
+            game.currentDifficulty = Game.Difficulty.Hard;
+        }
+
+        rockTimer -= Raylib.GetFrameTime();
+        if (rockTimer <= 0)
+        {
+            rocks.Add(new Rock());
+            rockTimer = rockTimerMax;
+            rockCount++;
+        }
+
+        // Kolla om stenen krockar med missilen
+        for (var i = 0; i < rocks.Count; i++)
+        {
+            Rock rock = rocks[i];
+
+            if (Raylib.CheckCollisionCircleRec(m1.position, 10, rock.rect))
+            {
+                game.score++;
+                rocks.RemoveAt(i);
+            }
+
+            if (rock.rect.y >= 750)
+            {
+                game.life--;
+                rocks.RemoveAt(i);
+
+            }
+
+            if (game.life == 0)
+            {
+                showGameoverScreen = true;
+            }
+        }
+
+        // uppdatera position för alla stenar
+        foreach (Rock r in rocks)
+        {
+            r.Update(game.currentDifficulty);
+            r.Draw();
+        }
+
+        //GRAFIK 
+        Raylib.BeginDrawing();
+        Raylib.ClearBackground(Color.BLACK);
+        Raylib.DrawText($"Current Score:{game.score}", 50, 50, 20, Color.GREEN);
+        Raylib.DrawText($"Current Life:{game.life}", 50, 80, 20, Color.GREEN);
+        Raylib.DrawText($"Current Difficulty:{game.currentDifficulty}", 50, 110, 20, Color.GREEN);
+        Raylib.DrawText($"Rock count:{rockCount}", 50, 140, 20, Color.GREEN);
+
+        // missilen
+        m1.Update();
+        m1.Draw();
+
     }
-
-
-
-    //GRAFIK 
-    Raylib.BeginDrawing();
-    Raylib.ClearBackground(Color.BLACK);
-    Raylib.DrawText($"Current Score:{Score}", 50, 50, 20, Color.GREEN);
-    Raylib.DrawText($"Current Life:{Life}", 50, 80, 20, Color.GREEN);
-
-
-    m1.Update();
-    r1.CheckTimer();
-
-    m1.Draw();
-
-    // g1.Draw();
-    // g2.Draw();
-    // g3.Draw();
 
     Raylib.EndDrawing();
-
 }
-
-
-
-
-
