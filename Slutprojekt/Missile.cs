@@ -11,7 +11,7 @@ using Raylib_cs;
 public class Missile
 {
     public Vector2 position = new Vector2(200, 200);
-    public float speed = 5;
+    public float speed = 10;
 
     public void Update()
     {
@@ -32,14 +32,5 @@ public class Missile
     }
 
 
-    // public void FlyToMousePos()
-    // {
-
-    //     Vector2 MissileVector =
-    //     while (Missile.x <  )
-    //     {
-
-    //     }
-
-    // }
+   
 }

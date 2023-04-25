@@ -32,14 +32,24 @@ int cannonHeight = 50;
 
 int Score = 0;
 
-List<Rock> rocks = new List<Rock>();
+int Life = 3;
+
+// List<Rock> rocks = new List<Rock>();
+
+List<Ground> buildings = new List<Ground>();
+
+
+
+
 
 Missile m1 = new Missile();
 
 Rock r1 = new Rock();
 
-Rectangle cannon = new Rectangle(10, 700, cannonWidth, cannonHeight);
-Rectangle missile = new Rectangle(10, 300, 15, 15);
+
+// Rectangle cannon = new Rectangle(10, 700, cannonWidth, cannonHeight);
+// Rectangle missile = new Rectangle(10, 300, 15, 15);
+
 
 
 while (Raylib.WindowShouldClose() == false)
@@ -49,42 +59,82 @@ while (Raylib.WindowShouldClose() == false)
     // LOGIK
     // Rectangle rock = new Rectangle(r1.x, r1.y, 50, 50);
 
-    for (var i = 0; i < rocks.Count; i++)
+
+
+
+    for (var i = 0; i < r1.rocks.Count; i++)
     {
-        Rock rock = rocks[i];
+        Rock rock = r1.rocks[i];
 
         if (Raylib.CheckCollisionCircleRec(m1.position, 10, rock.rect))
         {
             Score++;
+            r1.rocks.RemoveAt(i);
         }
 
+
+        // if (Raylib.CheckCollisionRecs(g1.rect1, rock.rect))
+        // {
+        //     Life--;
+        //     rocks.RemoveAt(i);
+        // }
+        // if (Raylib.CheckCollisionRecs(g1.rect2, rock.rect))
+        // {
+        //     Life--;
+        //     rocks.RemoveAt(i);
+        // }
+
+        // if (Raylib.CheckCollisionRecs(g1.rect3, rock.rect))
+        // {
+        //     Life--;
+        //     rocks.RemoveAt(i);
+        // }
+
+
+
+
     }
 
 
 
-    if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
-    {
-        rocks.Add(new Rock());
-    }
+    // rocks.Add(new Rock());
 
-    foreach (Rock r in rocks)
+
+
+
+
+
+
+
+
+    foreach (Rock r in r1.rocks)
     {
         r.Draw();
         r.Update();
     }
+    foreach (Ground b in buildings)
+    {
+        b.Draw();
+    }
+
 
 
     //GRAFIK 
     Raylib.BeginDrawing();
     Raylib.ClearBackground(Color.BLACK);
     Raylib.DrawText($"Current Score:{Score}", 50, 50, 20, Color.GREEN);
+    Raylib.DrawText($"Current Life:{Life}", 50, 80, 20, Color.GREEN);
 
 
     m1.Update();
-    // r1.Update();
+    r1.CheckTimer();
+
     m1.Draw();
-    // r1.Draw();
-    // Raylib.DrawRectangleRec(rock, Color.BLANK);
+
+    // g1.Draw();
+    // g2.Draw();
+    // g3.Draw();
+
     Raylib.EndDrawing();
 
 }
