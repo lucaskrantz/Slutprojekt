@@ -102,35 +102,36 @@ while (Raylib.WindowShouldClose() == false)
         {
             rocks.Add(new Rock());
             rockTimer = rockTimerMax;
-            rockCount++; 
+            rockCount++;
         }
 
 
-        // Kolla om stenen krockar med missilen
-        // Kolla om stenen har nuddat botten av skärmen
+
         // Kolla om Life = 0, isådanafall visar Game-Over -skärmen.
-        // Tar sedan bort stenen ifall krock har skett
-        for (var i = 0; i < rocks.Count; i++)
+        if (game.life == 0)
         {
-            Rock rock = rocks[i];
-            if (CheckCollision(m1, rock))
-            {
-                game.score++;
-                rocks.RemoveAt(i);
-            }
-
-            if (rock.rect.y >= 750)
-            {
-                game.life--;
-                rocks.RemoveAt(i);
-
-            }
-
-            if (game.life == 0)
-            {
-                showGameoverScreen = true;
-            }
+            showGameoverScreen = true;
         }
+
+        // Kollar ifall värdet från funktionen rocks.RemoveAll returnarer siffran 1
+        //  Det kommer alltid bara vara en sten som nuddar
+        // botten vid en viss tidpunkt, därav kan vi använda == 1.
+        //
+        if (rocks.RemoveAll(r => r.rect.y >= 750) == 1)
+        {
+            // Tar bort ett liv
+            game.life--;
+
+        }
+        // Kollar ifall värdet som returneras från funktionen rocks.RemoveAll inte
+        // är lika med 0. Detta innebär att vid en kollision skulle värdet vara 1, eller 
+        // möjligen 2 ifall m1 krockar med 2 rocks samtidigt.
+        if (rocks.RemoveAll(r => CheckCollision(m1, r)) != 0)
+        {
+            //Lägger till 1 score
+            game.score++;
+        }
+
 
         // uppdatera position för alla stenar
         foreach (Rock r in rocks)
