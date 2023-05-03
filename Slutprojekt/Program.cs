@@ -102,7 +102,7 @@ while (Raylib.WindowShouldClose() == false)
         {
             rocks.Add(new Rock());
             rockTimer = rockTimerMax;
-            rockCount++;
+            rockCount++; 
         }
 
 

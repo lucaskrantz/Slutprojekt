@@ -22,7 +22,7 @@ public class Missile
         position += diff;
 
     }
-// Metod som ritam missilen
+    // Metod som ritam missilen
     public void Draw()
     {
         Raylib.DrawCircleV(position, 10, Color.RED);
