@@ -24,13 +24,10 @@ List<Rock> rocks = new List<Rock>();
 int rockCount = 0;
 
 Game game = new Game();
-
 // Missilen som användaren kontrollerar
 Missile m1 = new Missile();
-
 float rockTimer = 3f;
 float rockTimerMax = 3f;
-
 bool showStartScreen = true;
 bool showGameoverScreen = false;
 
@@ -136,8 +133,7 @@ while (Raylib.WindowShouldClose() == false)
         // uppdatera position för alla stenar
         foreach (Rock r in rocks)
         {
-            r.Update(game.currentDifficulty);
-            r.Draw();
+            r.DoAll(rocks, game);
         }
 
 

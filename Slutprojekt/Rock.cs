@@ -14,6 +14,12 @@ public class Rock
     }
 
 
+    public void DoAll(List<Rock> rocks, Game game)
+    {
+            Update(game.currentDifficulty);
+            Draw();   
+    }
+
     // Uppdatera positionen för stenen
     // Justerar hastigheten av hur stenen ska förflytta sig, beroende på difficulty.
     public void Update(Game.Difficulty difficulty)
