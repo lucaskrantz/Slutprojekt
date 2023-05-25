@@ -8,6 +8,11 @@ public class Missile
     public Vector2 position = new Vector2(200, 200);
     public float speed = 10;
 
+    public void DoAll()
+    {
+        Update();
+        Draw();
+    }
     public void Update()
     {
         // Uträkning för missilen och musens position, samt hur missilen
