@@ -27,7 +27,7 @@ Game game = new Game();
 Missile m1 = new Missile();
 float rockTimer = 3f;
 float rockTimerMax = 3f;
-bool ShouldAddNewRock(float timerValue)
+bool ShouldAddNewRock(float timerValue) // Bestämmer ifall ny rock ska läggas till
 {
     if (timerValue <= 0)
     {
@@ -39,18 +39,18 @@ bool ShouldAddNewRock(float timerValue)
     }
 }
 
-void AddNewRock()
+void AddNewRock() // lägger till en ny rock
 {
     rocks.Add(new Rock());
     rockCount++;
 }
-void ResetRockTimer()
+void ResetRockTimer() // Startar om rock-timern
 {
     rockTimer = rockTimerMax;
 }
 
 
-void UpdateEntities()
+void UpdateEntities() // Uppdaterar alla entites, som missilen eller rocks
 {
     m1.DoAll();
     foreach (Rock r in rocks)
@@ -61,13 +61,13 @@ void UpdateEntities()
 }
 while (Raylib.WindowShouldClose() == false)
 {
-    if (game.DecideScreen())
+    if (game.DecideScreen()) //Ifall DecideScreen är true så visas antingen Start- eller Gameover skärmen.
     {
         game.DecideScreen();
     }
     else
     {
-        game.Update(rockCount);
+        game.Update(rockCount); // Updaterar spelet, typ som att kolla liv eller difficulty
         UpdateEntities();
         rockTimer -= Raylib.GetFrameTime();
         if (ShouldAddNewRock(rockTimer))
@@ -77,7 +77,7 @@ while (Raylib.WindowShouldClose() == false)
         }
         //GRAFIK 
         Raylib.BeginDrawing();
-        game.DrawHUD(rockCount);
+        game.DrawHUD(rockCount); // ritar HUD-en
     }
     Raylib.EndDrawing();
 }
